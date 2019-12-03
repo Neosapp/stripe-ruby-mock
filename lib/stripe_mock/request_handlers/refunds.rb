@@ -18,7 +18,13 @@ module StripeMock
           end
         end
 
-        charge = assert_existence :charge, params[:charge], charges[params[:charge]]
+        if params[:payment_intent]
+          payment_intent = assert_existence :payment_intent, params[:payment_intent], payment_intents[params[:payment_intent]]
+          charge = payment_intent[:charges][:data]&.first
+        else
+          charge = assert_existence :charge, params[:charge], charges[params[:charge]]
+        end
+
         params[:amount] ||= charge[:amount]
         id = new_id('re')
         bal_trans_params = {

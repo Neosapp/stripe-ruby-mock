@@ -3,6 +3,7 @@ module StripeMock
     module Helpers
 
       def add_refund_to_charge(refund, charge)
+        charge[:refunds] ||= {:data => []} 
         refunds = charge[:refunds]
         refunds[:data] << refund
         refunds[:total_count] = refunds[:data].count
